@@ -1,0 +1,46 @@
+version: '3'
+services:
+  opensearch:
+    image: opensearchproject/opensearch
+    container_name: aws-opensearch-optimization-opensearch
+    ports:
+      - 9200:9200
+      - 9600:9600  # required for Performance Analyzer
+    expose:
+      - '9200'
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node1
+      - discovery.seed_hosts=opensearch-node1
+      - cluster.initial_cluster_manager_nodes=opensearch-node1
+      - bootstrap.memory_lock=false
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=SuperStrongPassword123@
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - aws-opensearch-optimization-opensearch-data:/usr/share/opensearch/data
+    networks:
+      - opensearch-net
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: aws-opensearch-optimization-opensearch-dashboards
+    ports:
+      - 5601:5601
+    expose:
+      - '5601'
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+    networks:
+      - opensearch-net
+
+volumes:
+  aws-opensearch-optimization-opensearch-data:
+
+networks:
+  opensearch-net:

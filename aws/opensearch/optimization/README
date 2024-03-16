@@ -1,0 +1,25 @@
+# A Opensearch and Opensearch Dashboards container
+
+## &#x1F512; Credentials
+
+- Username: `admin`
+- Password: `SuperStrongPassword123@`
+
+## URLs
+
+- opensearch: `https://localhost:9200/`
+- dashboards: `http://localhost:5601`
+
+## &#x1F6A8; Troubleshooting
+
+### Error when running `docker-compose.yml`
+
+```
+max virtual memory areas vm.max_map_count [65530] is too low, increase to at least[262144]
+```
+
+### Fix for Windows:
+
+1. Open PowerShell
+2. run `wsl -d docker-desktop`
+3. then run `sysctl -w vm.max_map_count=262144`
